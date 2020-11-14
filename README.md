@@ -1,7 +1,7 @@
 # Chinese-Essay-Dataset-For-Sentence-Function-Identification
-A Chinese argumentative student essay dataset for Sentence Function Identification.
+A Chinese argumentative student essay code and dataset for Sentence Function Identification.
 
-# Data
+# Dataset
 
     ./data/Ch_train.json    # Chinese trianing dataset
 
