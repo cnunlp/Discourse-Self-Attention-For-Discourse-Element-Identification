@@ -1,5 +1,5 @@
-# Chinese-Essay-Dataset-For-Sentence-Function-Identification
-A Chinese argumentative student essay code and dataset for Sentence Function Identification.
+# Chinese Essay Dataset For Discourse Element Identification
+A Chinese argumentative student essay code and dataset for Discourse Element Identification.
 
 # Dataset
 
