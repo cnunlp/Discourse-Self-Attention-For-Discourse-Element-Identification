@@ -1,6 +1,8 @@
 # Chinese Essay Dataset For Discourse Element Identification
 A Chinese argumentative student essay code and dataset for Discourse Element Identification.
 
+The paper [Discourse Self-Attention for Discourse Element Identification in Argumentative Student Essays](https://www.aclweb.org/anthology/2020.emnlp-main.225/) describes the detail of the method and dataset.
+
 # Dataset
 
     ./data/Ch_train.json    # Chinese trianing dataset
