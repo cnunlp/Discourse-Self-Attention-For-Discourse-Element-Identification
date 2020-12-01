@@ -112,6 +112,42 @@ class PositionLayer(nn.Module):
         pp_em_w = [[i/10] * self.p_embd_dim for i in range(11)]
         self.p_embeddings.weight = nn.Parameter(torch.FloatTensor(pp_em_w))
         
+         
+class InterSentenceSPPLayer(nn.Module):
+    def __init__(self, hidden_dim, num_levels=4, pool_type='max_pool'):
+        super(InterSentenceSPPLayer, self).__init__()
+        self.linearK = nn.Linear(hidden_dim, hidden_dim)
+        self.linearQ = nn.Linear(hidden_dim, hidden_dim)
+        self.num_levels = num_levels
+        self.pool_type = pool_type
+        if self.pool_type == 'max_pool':
+            self.SPP = nn.ModuleList([nn.AdaptiveMaxPool1d(2**i) for i in range(num_levels)])
+        else:
+            self.SPP = nn.ModuleList([nn.AdaptiveAvgPool1d(2**i) for i in range(num_levels)])
+        
+    def forward(self, sentpres, is_softmax=False):
+        # sentpres: (batch_n, doc_l, output_dim*2)
+        doc_l = sentpres.size(1)
+        key = self.linearK(sentpres)
+        query = self.linearQ(sentpres)
+        d_k = query.size(-1)
+        features = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)  # features: (batch_n, doc_l, doc_l)
+        if is_softmax:
+            features = F.softmax(features, dim=2)
+            # print(torch.sum(features, dim=2))
+
+        features = torch.tanh(features)
+        self.ft =  features
+        pooling_layers = []
+        for pooling in self.SPP:
+            tensor = pooling(features)
+            pooling_layers.append(tensor)
+            
+        # print([x.size() for x in pooling_layers])
+        self.features = torch.cat(pooling_layers, dim=-1)
+        return self.features  
+        
+        
 class InterSentenceSPPLayer3(nn.Module):
     def __init__(self, hidden_dim, num_levels=4, pool_type='max_pool', active_func='tanh'):
         super(InterSentenceSPPLayer3, self).__init__()

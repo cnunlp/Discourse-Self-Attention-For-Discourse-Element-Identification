@@ -128,36 +128,6 @@ def test_all(test, newdir, w_file, data, title=False, is_mask=False):
 
             wf.write('\n')
 
-def test_all_be(test, newdir, w_file, data, title=False, is_mask=False):
-    pad_documents, pad_labels, features = data
-
-    with open(w_file,'w',encoding='utf-8') as wf:
-        wf.write(csv_head_e + '\n')
-        filenames = os.listdir(newdir)
-        for file in filenames:
-            fname = os.path.join(newdir, file)
-            print(file)
-            tag_model = torch.load(fname, map_location='cpu')  
-    #         tag_model.pWeight = torch.nn.Parameter(torch.ones(3))
-
-            accuracy, a = test(tag_model, pad_documents, pad_labels, features, 'cpu', batch_n=1, title=title, is_mask=is_mask)
- 
-            print(accuracy)
-            print(a)
-            
-            precision, recall, f1, all_prf = PRF(a[1:5, 1:5], ignore=[])
-            accuracy, all_p, all_r, weighted_f, macro_f, micro_f = all_prf
-            
-            wf.write('_'.join(file.split('_')[: -1]))
-            wf.write(', ' + str(accuracy))
-            wf.write(', ' + str(all_p) + ', ' + str(all_r) + ', ' + str(weighted_f))            
-            wf.write(', ' + str(macro_f))
-            wf.write(', ' + str(micro_f))
-            for i in range(len(f1)):
-                wf.write(', ' + str(precision[i]) + ', ' +  str(recall[i]) + ', ' + str(f1[i]))
-
-            wf.write('\n')
-
 def test_all_e(test, newdir, w_file, data, title=False, is_mask=False, embeddings=None, ignore=[]):
 
     pad_documents, pad_labels, features = data
@@ -169,13 +139,14 @@ def test_all_e(test, newdir, w_file, data, title=False, is_mask=False, embedding
             fname = os.path.join(newdir, file)
             print(file)
             tag_model = torch.load(fname, map_location='cpu')  
-    #         tag_model.pWeight = torch.nn.Parameter(torch.ones(3))
 
-            # accuracy, a = test(tag_model, pad_documents, pad_labels, features, 'cpu', batch_n=1, title=title, is_mask=is_mask, embeddings=embeddings)
             accuracy, a = test(tag_model, pad_documents, pad_labels, features, 'cpu', batch_n=1, title=title, embeddings=embeddings)
 
             print(accuracy)
             print(a)
+            
+            if 'e_roles_3' in newdir:
+                a = a[: -1, : -1]
             
             precision, recall, f1, all_prf = PRF(a[1:, 1:], ignore=ignore)
             accuracy, all_p, all_r, weighted_f, macro_f, micro_f = all_prf
@@ -191,7 +162,7 @@ def test_all_e(test, newdir, w_file, data, title=False, is_mask=False, embedding
             wf.write('\n')
             
 def Chinese_test(model_dir):
-    in_file = './data/test.json'
+    in_file = './data/Ch_test.json'
     embed_filename = './embd/new_embeddings2.txt'
     title = True
 
@@ -206,12 +177,12 @@ def Chinese_test(model_dir):
     
     from train import test
     w_file = './value/%s_%s.csv' % (in_file.split('.')[1].split('/')[-1], model_dir.split('/')[2])
-    test_folds(test, model_dir, w_file, (pad_documents, pad_labels, features), title, is_mask=is_mask)
+    test_all(test, model_dir, w_file, (pad_documents, pad_labels, features), title, is_mask=is_mask)
     
 def English_test(model_dir):
     import utils_e as utils
     from transformers import BertTokenizer
-    in_file = './data/AAEtest3.json'
+    in_file = './data/En_test.json'
     title = True
     is_word = False
     max_len = 40
@@ -225,12 +196,14 @@ def English_test(model_dir):
     
     from train_e import test
     w_file = './value/%s_%s.csv' % (in_file.split('.')[1].split('/')[-1], model_dir.split('/')[-2])
+    ignore = []
+    
     test_all_e(test, model_dir, w_file, (pad_documents, pad_labels, features), title, embeddings=embeddings)    
     
 def English_test_ft(model_dir):
     import utils_e as utils
     from transformers import BertTokenizer
-    in_file = './data/AAEtest3.json'
+    in_file = './data/En_test.json'
     title = True
     is_word = False
     max_len = 40
@@ -243,7 +216,8 @@ def English_test_ft(model_dir):
     pad_documents, pad_labels = utils.sentencePaddingId(en_documents, en_labels, max_len)
     
     n_features = utils.featuresExtend(features, en_documents, en_labels, tokenizer)
+    print(len(n_features[0][0]))
     
-    from train_e import test
+    from train_ef import test
     w_file = './value/%s_%s.csv' % (in_file.split('.')[1].split('/')[-1], model_dir.split('/')[-2])
     test_all_e(test, model_dir, w_file, (pad_documents, pad_labels, n_features), title, embeddings=embeddings)

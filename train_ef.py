@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO,
                 
 from transformers import BertTokenizer
 # import config
-from model import STWithRSWithFt2
+from model import STWithRSbySPPWithFt2
 import utils_e as utils
 
 import numpy as np
@@ -30,7 +30,7 @@ def list2tensor(x, y, ft, p_embd, device='cpu'):
 
     tp = torch.tensor(ft, dtype=torch.float, device=device)[:, :, :6]
     
-    tft = torch.tensor(ft, dtype=torch.float, device=device)[:, :, 7:]
+    tft = torch.tensor(ft, dtype=torch.float, device=device)[:, :, 6:]
     return inputs, labels, tp, tft
 
 def train(model, X, Y, FT, is_gpu=False, epoch_n=10, lr=0.1, batch_n=100, title=False, embeddings=None):
@@ -165,11 +165,9 @@ def test(model, X, Y, FT, device='cpu', batch_n=1, title=False, embeddings=None)
     t_c = 0
     d = preds.size(-1)
     a = np.zeros((d-1, d-1))
-    # a = np.zeros((d, d))
     l = 0
     for i in range(preds.size(0)):
         p = preds[i][:-1].cpu().argmax().numpy()
-        # p = preds[i][:].cpu().argmax().numpy()
         r = int(labels[i].cpu().numpy())
         if r != 4:
         # if True:
@@ -228,7 +226,7 @@ if __name__ == "__main__":
     if not os.path.isdir(model_dir):
         os.mkdir(model_dir)
 
-    tag_model = STWithRSWithFt2(embeddings.embedding_dim, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, ft_size=ft_size)
+    tag_model = STWithRSbySPPWithFt2(embeddings.embedding_dim, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, ft_size=ft_size)
 
 
 
