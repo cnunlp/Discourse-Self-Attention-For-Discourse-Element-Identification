@@ -219,7 +219,7 @@ if __name__ == "__main__":
     if p_embd != 'embd_c':
         features = utils.discretePos(features)
 
-    tag_model = STWithRSbySPP(vec_size, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, pool_type='max_pool', active_func='tanh')
+    tag_model = STWithRSbySPP(vec_size, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, pool_type='max_pool')
     
     
     if p_embd == 'embd_b':
