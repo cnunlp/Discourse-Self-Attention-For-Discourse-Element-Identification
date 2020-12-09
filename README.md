@@ -40,6 +40,14 @@ Detail informatin please refers to the paper.
 
     # English_test_ft(model_dir)  for English test with features
 
+# Models
+    ./model/roles/DiSA_ch/DiSA_ch.pk    # The DiSA model for Chinese dataset
+    
+    ./model/e_roles_4/DiSA_en4/DiSA_en4.pk  # TheDiSA model for English dataset(4 classes)
+    
+    ./model/e_roles_3/DiSA_en3/DiSA_en3.pk  # The DiSA model for English dataset(3 classes)
+    
+    ./model/e_roles_3/DiSA_ft_en3/DiSA_ft_en3.pk  # The DiSA model with features for English dataset(3 classes)
 
 # Sentence Positional Ecodings setting
 
