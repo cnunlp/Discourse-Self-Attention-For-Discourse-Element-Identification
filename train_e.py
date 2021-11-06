@@ -210,7 +210,7 @@ if __name__ == "__main__":
     
     embeddings = torch.load('./embd/bert-base-uncased-word_embeddings.pkl')
 
-    tag_model = STWithRSbySPP3(embeddings.embedding_dim, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, pool_type='max_pool', active_func='tanh')
+    tag_model = STWithRSbySPP(embeddings.embedding_dim, hidden_dim, sent_dim, class_n, p_embd=p_embd, p_embd_dim=p_embd_dim, pool_type='max_pool', active_func='tanh')
 
     class_n = 4
     model_dir = './model/e_roles_%d/%s_%s/' % (class_n, tag_model.getModelName(), datetime.datetime.now().strftime('%y%m%d%H%M%S'))

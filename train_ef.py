@@ -188,7 +188,7 @@ if __name__ == "__main__":
     # main(args)
     
 
-    in_file = './data/AAEtrain3.json'
+    in_file = './data/En_train.json'
     is_word=False
     class_n = 5
        
