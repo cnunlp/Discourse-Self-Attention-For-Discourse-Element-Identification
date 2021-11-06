@@ -60,7 +60,7 @@ parameter 'p_embd' setting
 
 ## Reference
 The code and dataset are released with this paper:
-
+```bibtex
         @inproceedings{song-etal-2020-discourse,
             title = "Discourse Self-Attention for Discourse Element Identification in Argumentative Student Essays",
             author = "Song, Wei  and
@@ -76,3 +76,4 @@ The code and dataset are released with this paper:
             url = "https://www.aclweb.org/anthology/2020.emnlp-main.225",
             pages = "2820--2830",
         }
+```
