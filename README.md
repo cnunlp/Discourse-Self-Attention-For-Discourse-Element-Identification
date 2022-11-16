@@ -1,7 +1,7 @@
 # Chinese Essay Dataset For Discourse Element Identification
 
 This project includes the dataset and source code for the paper [Discourse Self-Attention for Discourse Element Identification in Argumentative Student Essays](https://www.aclweb.org/anthology/2020.emnlp-main.225/).
-Detail informatin please refers to the paper.
+Detailed informatin please refers to the paper.
 
 # Dataset
 
